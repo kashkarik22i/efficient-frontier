@@ -42,6 +42,33 @@ def raw_files(input_dir: Path) -> list[Path]:
     return files
 
 
+def processed_files(input_dir: Path) -> list[Path]:
+    """Return all processed price-change CSVs in deterministic order."""
+    files = sorted(input_dir.glob("*_price_changes.csv"))
+    if not files:
+        raise FileNotFoundError(f"No processed CSV files found in {input_dir}.")
+    return files
+
+
+def load_processed_price_series(path: Path) -> pd.DataFrame:
+    """Load a processed CSV containing dates, prices, and price changes."""
+    data = pd.read_csv(path)
+    required_columns = {"Date", "Price"}
+    if not required_columns.issubset(data.columns):
+        raise ValueError(f"{path} must contain Date and Price columns.")
+    prices = pd.DataFrame(
+        {
+            "Date": pd.to_datetime(data["Date"], errors="raise"),
+            "Price": pd.to_numeric(data["Price"], errors="raise"),
+        }
+    ).sort_values("Date")
+    if prices["Date"].duplicated().any():
+        raise ValueError(f"{path} contains duplicate dates.")
+    if prices["Price"].isna().any() or (prices["Price"] <= 0).any():
+        raise ValueError(f"{path} contains missing or non-positive prices.")
+    return prices.reset_index(drop=True)
+
+
 def asset_name(path: Path) -> str:
     """Return the source file stem as a stable asset identifier."""
     return path.stem

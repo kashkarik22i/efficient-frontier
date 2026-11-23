@@ -42,7 +42,7 @@ def _portfolio_volatility(weights: np.ndarray, covariance: np.ndarray) -> float:
 
 def efficient_frontier(
     returns: pd.DataFrame,
-    points: int = 100,
+    points: int = 500,
 ) -> pd.DataFrame:
     """Calculate long-only, fully invested minimum-variance frontier points."""
     if points < 2:

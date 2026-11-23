@@ -9,9 +9,11 @@ description = "Reusable scripts for processing and reporting on price series."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "certifi>=2023.7.22",
     "matplotlib>=3.7",
     "pandas>=2.0",
     "scipy>=1.10",
+    "yfinance>=0.2.40",
 ]
 
 [project.optional-dependencies]

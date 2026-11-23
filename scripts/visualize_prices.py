@@ -1,4 +1,4 @@
-"""Plot prices from all original raw files for local exploration."""
+"""Plot prices from all raw files for local exploration."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ def plot_prices(input_dir: Path, output_path: Path) -> Path:
     for input_path in raw_files(input_dir):
         prices = load_price_series(input_path)
         axis.plot(prices["Date"], prices["Price"], label=asset_name(input_path))
-    axis.set(title="Original price series", xlabel="Date", ylabel="Price")
+    axis.set(title="Raw price series", xlabel="Date", ylabel="Price")
     axis.yaxis.set_major_formatter(StrMethodFormatter("{x:,.0f}"))
     axis.grid(alpha=0.25)
     axis.legend()
@@ -34,7 +34,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("results/original_prices.png"),
+        default=Path("results/raw_prices.png"),
     )
     args = parser.parse_args()
     print(f"Wrote {plot_prices(args.input_dir, args.output)}")

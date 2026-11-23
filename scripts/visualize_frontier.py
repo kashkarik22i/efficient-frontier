@@ -38,13 +38,6 @@ def plot_frontier(
         label="Efficient frontier",
         color="black",
     )
-    axis.scatter(
-        frontier["monthly_volatility"],
-        frontier["monthly_return"],
-        color="black",
-        s=10,
-        zorder=2,
-    )
     axis.set(
         title="Efficient frontier",
         xlabel="Monthly volatility",
